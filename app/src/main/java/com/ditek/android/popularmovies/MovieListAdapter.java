@@ -1,13 +1,18 @@
 package com.ditek.android.popularmovies;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.attr.data;
 
 /**
  * Created by diaa on 2/8/2017.
@@ -16,8 +21,10 @@ import java.util.List;
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
     List<Integer> mIconsList;
     ImageView mIconView;
+    Context mContext;
 
-    MovieListAdapter(List<Integer> data){
+    MovieListAdapter(Context context, List<Integer> data) {
+        mContext = context;
         mIconsList = new ArrayList<>(data);
     }
 
@@ -30,7 +37,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        mIconView.setImageResource(mIconsList.get(position));
+//        mIconView.setImageResource(mIconsList.get(position));
+        Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png").into(mIconView);
     }
 
     @Override
@@ -39,7 +47,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
-        public MovieViewHolder(View view){
+        public MovieViewHolder(View view) {
             super(view);
             mIconView = (ImageView) view.findViewById(R.id.iv_icon);
         }
