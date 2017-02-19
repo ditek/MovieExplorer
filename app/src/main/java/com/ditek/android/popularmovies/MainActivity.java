@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
     private ProgressBar mLoadingIndicator;
+    private Snackbar mSnackbar;
 
     private TextView mErrorText;
 
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         new GetMoviesTask().execute(Utilities.SortMethod.POPULAR);
         Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        mSnackbar = createRetrySnackbar();
     }
 
     @Override
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
         mMenuItemPopular = menu.findItem(R.id.action_popular);
         mMenuItemTopRated = menu.findItem(R.id.action_top_rated);
         return true;
@@ -96,14 +99,18 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     private void showPopularMovies() {
         new GetMoviesTask().execute(Utilities.SortMethod.POPULAR);
-        mMenuItemPopular.setVisible(false);
-        mMenuItemTopRated.setVisible(true);
+        mMenuItemPopular.setEnabled(false);
+        mMenuItemTopRated.setCheckable(true);
+        mMenuItemTopRated.setEnabled(true);
+        mMenuItemTopRated.setCheckable(false);
     }
 
     private void showTopRatedMovies() {
         new GetMoviesTask().execute(Utilities.SortMethod.TOP_RATED);
-        mMenuItemPopular.setVisible(true);
-        mMenuItemTopRated.setVisible(false);
+        mMenuItemPopular.setEnabled(true);
+        mMenuItemPopular.setCheckable(false);
+        mMenuItemTopRated.setEnabled(false);
+        mMenuItemTopRated.setCheckable(true);
     }
 
     private void showMoviesData() {
@@ -113,7 +120,18 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorText.setVisibility(View.VISIBLE);
+//        mErrorText.setVisibility(View.VISIBLE);
+    }
+
+    private Snackbar createRetrySnackbar(){
+        return Snackbar.make(findViewById(R.id.main_layout), "No Internet", Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mSnackbar.dismiss();
+                        showPopularMovies();
+                    }
+                });
     }
 
     /**********************/
@@ -129,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         @Override
         protected List<MovieData> doInBackground(Utilities.SortMethod... params) {
-
+            Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() + " " + params[0].toString());
             if (params.length == 0) {
                 return null;
             }
@@ -140,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
             try {
                 String response = Utilities.getResponseFromHttpUrl(requestUrl);
                 List<MovieData> movieData = MovieDBJsonUtils.getMovieListFromJson(response);
+                Log.i(TAG, "Received data entries: " + String.valueOf(movieData.size()));
                 return movieData;
 
             } catch (Exception e) {
@@ -159,7 +178,10 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
                 mAdapter.setData(mIconUrlList);
                 showMoviesData();
             } else {
+                Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() +  " No Data");
                 showErrorMessage();
+                mSnackbar = createRetrySnackbar();
+                mSnackbar.show();
             }
         }
     }

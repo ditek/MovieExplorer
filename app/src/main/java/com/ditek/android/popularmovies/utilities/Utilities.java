@@ -25,7 +25,7 @@ public final class Utilities {
     private static final String MOVIE_SORT_TOP_RATED = "top_rated";
 
     private static final String API_KEY_PARAM = "api_key";
-    private static final String API_KEY = "API_KEY";
+    private static final String API_KEY = "10c850a953edc25fcaa42e84034e18cb";
 
     public enum SortMethod {POPULAR, TOP_RATED}
 
