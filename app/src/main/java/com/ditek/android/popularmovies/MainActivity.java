@@ -22,17 +22,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MovieListAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     public final static String SER_KEY = "com.ditek.android.popularmovies.ser";
     private final static int IMAGE_VIEW_WIDTH = 100;
 
-    private RecyclerView mRecyclerView;
-    private MovieListAdapter mAdapter;
-    private ProgressBar mLoadingIndicator;
-    private Snackbar mSnackbar;
+    @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
+    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
+    @BindView(R.id.tv_error) TextView mErrorText;
 
-    private TextView mErrorText;
+    private MovieListAdapter mAdapter;
+
+    private Snackbar mSnackbar;
 
     private MenuItem mMenuItemPopular;
     private MenuItem mMenuItemTopRated;
@@ -43,11 +47,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        mErrorText = (TextView) findViewById(R.id.tv_error);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
         int mNoOfColumns = Utilities.calculateNoOfColumns(getApplicationContext(), IMAGE_VIEW_WIDTH);
         GridLayoutManager layoutManager = new GridLayoutManager(this, mNoOfColumns);
         mRecyclerView.setLayoutManager(layoutManager);
