@@ -29,9 +29,8 @@ public class DetailsActivity extends AppCompatActivity {
         mPlotTV = (TextView) findViewById(R.id.tv_plot);
         mPosterImageView = (ImageView) findViewById(R.id.iv_details_poster);
 
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            mMovieData = (MovieData) bundle.getSerializable(MainActivity.SER_KEY);
+        mMovieData = getIntent().getParcelableExtra("MovieData");
+        if (mMovieData != null) {
             Picasso.with(this)
                     .load(mMovieData.posterPath)
                     .into(mPosterImageView);

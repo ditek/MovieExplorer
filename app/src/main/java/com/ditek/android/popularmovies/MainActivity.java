@@ -67,9 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         Log.i(TAG, mIconUrlList.get(clickedItemIndex).title);
 
         Intent intent = new Intent(this, DetailsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(SER_KEY, mIconUrlList.get(clickedItemIndex));
-        intent.putExtras(bundle);
+        intent.putExtra("MovieData", mIconUrlList.get(clickedItemIndex));
         startActivity(intent);
     }
 
