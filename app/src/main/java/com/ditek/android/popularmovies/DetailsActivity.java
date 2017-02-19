@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private MovieData mMovieData;
@@ -29,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity {
         mPlotTV = (TextView) findViewById(R.id.tv_plot);
         mPosterImageView = (ImageView) findViewById(R.id.iv_details_poster);
 
-        mMovieData = getIntent().getParcelableExtra("MovieData");
+        mMovieData = Parcels.unwrap(getIntent().getParcelableExtra("MovieData"));
         if (mMovieData != null) {
             Picasso.with(this)
                     .load(mMovieData.posterPath)

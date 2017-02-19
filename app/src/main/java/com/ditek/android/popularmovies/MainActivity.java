@@ -18,6 +18,9 @@ import android.widget.TextView;
 import com.ditek.android.popularmovies.utilities.Utilities;
 import com.ditek.android.popularmovies.utilities.MovieDBJsonUtils;
 
+import org.parceler.Parcel;
+import org.parceler.Parcels;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         Log.i(TAG, mIconUrlList.get(clickedItemIndex).title);
 
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("MovieData", mIconUrlList.get(clickedItemIndex));
+        intent.putExtra("MovieData", Parcels.wrap(mIconUrlList.get(clickedItemIndex)));
         startActivity(intent);
     }
 
