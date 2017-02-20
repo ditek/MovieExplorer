@@ -18,9 +18,12 @@ import android.widget.TextView;
 import com.ditek.android.popularmovies.utilities.Utilities;
 import com.ditek.android.popularmovies.utilities.MovieDBJsonUtils;
 
+import org.json.JSONException;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +166,13 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
                 Log.i(TAG, "Received data entries: " + String.valueOf(movieData.size()));
                 return movieData;
 
-            } catch (Exception e) {
+            } catch (SocketTimeoutException e) {
+                Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() + ": " + "Connection Timeout");
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e){
                 e.printStackTrace();
                 return null;
             }
