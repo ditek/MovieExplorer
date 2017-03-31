@@ -149,7 +149,7 @@ public final class Utilities {
 
     //______________________________________________________________________________________________
 
-    public enum SortMethod {POPULAR, TOP_RATED}
+    public enum SortMethod {POPULAR, TOP_RATED, FAVORITE}
 
     public static URL buildQueryUrl(SortMethod movieSortMethod, int page) {
         String sortString;

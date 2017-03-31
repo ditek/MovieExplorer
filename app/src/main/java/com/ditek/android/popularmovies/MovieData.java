@@ -16,13 +16,12 @@ import static android.R.attr.data;
 
 @org.parceler.Parcel
 public class MovieData{
-//public class MovieData implements Parcelable{
     String title;
+    int id;
     String releaseDate;
-    String posterPath;
     String voteAvg;
     String plot;
-    int id;
+    String posterPath;
 
     @ParcelConstructor
     public MovieData(String title, String releaseDate, String posterPath, String voteAvg, String plot, int id) {
@@ -33,38 +32,4 @@ public class MovieData{
         this.plot = plot;
         this.id = id;
     }
-
-//    private MovieData(Parcel in) {
-//        this.title = in.readString();
-//        this.releaseDate = in.readString();
-//        this.posterPath = in.readString();
-//        this.voteAvg = in.readString();
-//        this.plot = in.readString();
-//    }
-
-//    public static final Parcelable.Creator<MovieData> CREATOR = new Creator<MovieData>() {
-//        @Override
-//        public MovieData createFromParcel(Parcel source) {
-//            return new MovieData(source);
-//        }
-//
-//        @Override
-//        public MovieData[] newArray(int size) {
-//            return new MovieData[size];
-//        }
-//    };
-//
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeString(title);
-//        dest.writeString(releaseDate);
-//        dest.writeString(posterPath);
-//        dest.writeString(voteAvg);
-//        dest.writeString(plot);
-//    }
 }

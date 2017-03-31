@@ -1,5 +1,8 @@
 package com.ditek.android.popularmovies;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ditek.android.popularmovies.utilities.Utilities;
+import com.github.zagum.switchicon.SwitchIconView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -26,11 +30,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
+
+import static android.R.attr.id;
+import static android.R.attr.name;
+
 public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private MovieData mMovieData;
     private List<Trailer> mTrailerList;
     private List<Review> mReviewList;
+    private SQLiteDatabase mDb;
 
     private ImageView mPosterImageView;
     private TextView mTitleTV;
@@ -38,19 +48,25 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mVoteAvgTV;
     private TextView mPlotTV;
 
-    private TrailerAdapter mTrailerAdapter;
+    @BindView(R.id.switch_favorite)
+    SwitchIconView mFavoriteSwitch;
+
     @BindView(R.id.rv_trailers)
     RecyclerView mTrailersView;
 
-    private ReveiwAdapter mReviewAdapter;
     @BindView(R.id.rv_reviews)
     RecyclerView mReviewsView;
+
+    private ReveiwAdapter mReviewAdapter;
+    private TrailerAdapter mTrailerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
+        FavoritesDbHelper dbHelper = new FavoritesDbHelper(this);
+        mDb = dbHelper.getWritableDatabase();
 
         mTitleTV = (TextView) findViewById(R.id.tv_title);
         mReleaseDataTV = (TextView) findViewById(R.id.tv_release_date);
@@ -79,9 +95,56 @@ public class DetailsActivity extends AppCompatActivity {
             mReleaseDataTV.setText(mMovieData.releaseDate);
             mVoteAvgTV.setText(mMovieData.voteAvg);
             mPlotTV.setText(mMovieData.plot);
+
+            // Check if the movie is a favorite
+            mFavoriteSwitch.setIconEnabled(isFavorite());
+
             Log.i(TAG, mMovieData.title);
             new GetTrailersTask().execute(mMovieData.id);
         }
+    }
+
+    public void favoriteClickHandler(View view) {
+        if (mFavoriteSwitch.isIconEnabled()) {
+            deleteFromFavorites();
+        } else {
+            addToFavorites();
+        }
+        mFavoriteSwitch.setIconEnabled(!mFavoriteSwitch.isIconEnabled());
+    }
+
+    boolean isFavorite() {
+        String selection = FavoritesEntry.COLUMN_MOVIE_ID + "=?";
+        String[] selectionArgs = {String.valueOf(mMovieData.id)};
+        Cursor cursor = mDb.query(
+                FavoritesEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null
+        );
+        int numRows = cursor.getCount();
+        cursor.close();
+        return numRows > 0;
+    }
+
+    void addToFavorites() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FavoritesEntry.COLUMN_TITLE, mMovieData.title);
+        contentValues.put(FavoritesEntry.COLUMN_MOVIE_ID, mMovieData.id);
+        contentValues.put(FavoritesEntry.COLUMN_DATE, mMovieData.releaseDate);
+        contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.voteAvg);
+        contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.plot);
+        contentValues.put(FavoritesEntry.COLUMN_POSTER, mMovieData.posterPath);
+        mDb.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
+    }
+
+    void deleteFromFavorites() {
+        String selection = FavoritesEntry.COLUMN_MOVIE_ID + "=?";
+        String[] selectionArgs = {String.valueOf(mMovieData.id)};
+        mDb.delete(FavoritesEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDb.close();
     }
 
     /* Async Task ********/

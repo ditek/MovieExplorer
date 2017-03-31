@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -12,11 +13,38 @@
         android:orientation="vertical"
         tools:context="com.ditek.android.popularmovies.DetailsActivity">
 
-        <ImageView
-            android:id="@+id/iv_details_poster"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_details_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="end|bottom"-->
+                <!--android:src="@drawable/star"-->
+                <!--android:tint="@android:color/holo_orange_light" />-->
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/switch_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="@android:color/holo_orange_light"
+                app:si_enabled="true"
+                app:si_no_dash="true"
+                android:layout_gravity="end|bottom"
+                android:clickable="true"
+                android:onClick="favoriteClickHandler"
+                app:srcCompat="@drawable/star"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_title"
