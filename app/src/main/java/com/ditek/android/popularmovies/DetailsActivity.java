@@ -1,8 +1,10 @@
 package com.ditek.android.popularmovies;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -98,6 +100,12 @@ public class DetailsActivity extends AppCompatActivity {
 
             // Check if the movie is a favorite
             mFavoriteSwitch.setIconEnabled(isFavorite());
+            mFavoriteSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favoriteClickHandler(v);
+                }
+            });
 
             Log.i(TAG, mMovieData.title);
             new GetTrailersTask().execute(mMovieData.id);
@@ -116,9 +124,15 @@ public class DetailsActivity extends AppCompatActivity {
     boolean isFavorite() {
         String selection = FavoritesEntry.COLUMN_MOVIE_ID + "=?";
         String[] selectionArgs = {String.valueOf(mMovieData.id)};
-        Cursor cursor = mDb.query(
-                FavoritesEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null
+        ContentResolver resolver = getContentResolver();
+
+        Cursor cursor = resolver.query(
+                FavoritesEntry.CONTENT_URI, null, selection, selectionArgs, null
         );
+
+//        Cursor cursor = mDb.query(
+//                FavoritesEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null
+//        );
         int numRows = cursor.getCount();
         cursor.close();
         return numRows > 0;
@@ -132,7 +146,10 @@ public class DetailsActivity extends AppCompatActivity {
         contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.voteAvg);
         contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.plot);
         contentValues.put(FavoritesEntry.COLUMN_POSTER, mMovieData.posterPath);
-        mDb.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
+//        mDb.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
+
+        Uri uri = getContentResolver().insert(FavoritesEntry.CONTENT_URI, contentValues);
+        Log.i(TAG, "addToFavorites: " + uri.toString());
     }
 
     void deleteFromFavorites() {
@@ -185,6 +202,9 @@ public class DetailsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Pair<List<Trailer>, List<Review>> results) {
+            if(results == null){
+                return;
+            }
             mTrailerList = new ArrayList<>();
             mReviewList = new ArrayList<>();
             if (results.second != null) {

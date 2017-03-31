@@ -21,7 +21,8 @@
                 android:id="@+id/iv_details_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                tools:context="com.ditek.android.popularmovies.DetailsActivity"/>
 
             <!--<ImageView-->
                 <!--android:layout_width="wrap_content"-->
@@ -42,8 +43,8 @@
                 app:si_no_dash="true"
                 android:layout_gravity="end|bottom"
                 android:clickable="true"
-                android:onClick="favoriteClickHandler"
-                app:srcCompat="@drawable/star"/>
+                app:srcCompat="@drawable/star" />
+            <!--android:onClick="favoriteClickHandler"-->
         </FrameLayout>
 
         <TextView

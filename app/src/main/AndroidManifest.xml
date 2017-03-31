@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailsActivity"></activity>
+        <provider
+            android:name="com.ditek.android.popularmovies.FavoriteContentProvider"
+            android:authorities="com.ditek.android.popularmovies"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -168,27 +168,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         selectedItem.setCheckable(true);
     }
 
-    private void showPopularMovies() {
-        new GetMoviesTask().execute(Utilities.SortMethod.POPULAR);
-        disableAllMenuItems();
-        mMenuItemPopular.setEnabled(false);
-        mMenuItemPopular.setCheckable(true);
-    }
-
-    private void showTopRatedMovies() {
-        new GetMoviesTask().execute(Utilities.SortMethod.TOP_RATED);
-        disableAllMenuItems();
-        mMenuItemTopRated.setEnabled(false);
-        mMenuItemTopRated.setCheckable(true);
-    }
-
-    private void showFavoriteMovies() {
-        new GetMoviesTask().execute(Utilities.SortMethod.FAVORITE);
-        disableAllMenuItems();
-        mMenuItemFavorite.setEnabled(false);
-        mMenuItemFavorite.setCheckable(true);
-    }
-
     private void disableAllMenuItems() {
         mMenuItemPopular.setEnabled(true);
         mMenuItemTopRated.setEnabled(true);
@@ -220,7 +199,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     }
 
     private Cursor getFavoriteMovies() {
-        return mDb.query(FavoritesEntry.TABLE_NAME, null, null, null, null, null, null);
+//        return mDb.query(FavoritesEntry.TABLE_NAME, null, null, null, null, null, null);
+        return  getContentResolver().query(FavoritesEntry.CONTENT_URI, null, null, null, null);
     }
 
     /**********************/

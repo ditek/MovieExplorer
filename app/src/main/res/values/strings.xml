@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="app_name">Movie Explorer</string>
     <string name="action_popular">Popular Movies</string>
     <string name="action_top_rated">Top-rated Movies</string>
     <string name="error_message">An error has occurred. Please check your internet connection.</string>
