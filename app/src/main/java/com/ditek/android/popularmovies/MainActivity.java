@@ -16,10 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ditek.android.popularmovies.utilities.Utilities;
-import com.ditek.android.popularmovies.utilities.MovieDBJsonUtils;
 
 import org.json.JSONException;
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -33,7 +31,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MovieListAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-    public final static String SER_KEY = "com.ditek.android.popularmovies.ser";
     private final static int IMAGE_VIEW_WIDTH = 100;
 
     @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
@@ -158,11 +155,11 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
             }
 
             Utilities.SortMethod movieSortMethod = params[0];
-            URL requestUrl = Utilities.buildQueryUrl(movieSortMethod);
+            URL requestUrl = Utilities.buildQueryUrl(movieSortMethod, 1);
 
             try {
                 String response = Utilities.getResponseFromHttpUrl(requestUrl);
-                List<MovieData> movieData = MovieDBJsonUtils.getMovieListFromJson(response);
+                List<MovieData> movieData = Utilities.getMovieListFromJson(response);
                 Log.i(TAG, "Received data entries: " + String.valueOf(movieData.size()));
                 return movieData;
 
