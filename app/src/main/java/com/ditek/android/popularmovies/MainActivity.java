@@ -106,6 +106,27 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (mSortMethod == Utilities.SortMethod.FAVORITE) {
+            Cursor cursor = getFavoriteMovies();
+            List<MovieData> movieData = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(FavoritesEntry.COLUMN_MOVIE_ID));
+                String title = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_TITLE));
+                String releaseDate = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_DATE));
+                String voteAvg = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_VOTE));
+                String plot = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_PLOT));
+                String posterPath = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_POSTER));
+                movieData.add(new MovieData(title, releaseDate, posterPath, voteAvg, plot, id));
+            }
+            cursor.close();
+            mMovieList = movieData;
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onListItemClick(int clickedItemIndex) {
         Log.i(TAG, mMovieList.get(clickedItemIndex).title);
 
