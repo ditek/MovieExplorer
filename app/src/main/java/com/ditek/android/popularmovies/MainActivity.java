@@ -40,12 +40,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     private static final String MOVIE_DATA_KEY = "movie_data";
     private static final String SORT_METHOD_KEY = "sort_mode";
 
-    @BindView(R.id.rv_movies)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.pb_loading_indicator)
-    ProgressBar mLoadingIndicator;
-    @BindView(R.id.tv_error)
-    TextView mErrorText;
+    @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
+    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
 
     private MovieListAdapter mAdapter;
 
@@ -71,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         GridLayoutManager layoutManager = new GridLayoutManager(this, mNoOfColumns);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-
         mAdapter = new MovieListAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -88,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         } else {
             new GetMoviesTask().execute(mSortMethod);
         }
-        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
     }
 
     @Override
@@ -109,20 +103,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     protected void onResume() {
         super.onResume();
         if (mSortMethod == Utilities.SortMethod.FAVORITE) {
-            Cursor cursor = getFavoriteMovies();
-            List<MovieData> movieData = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(FavoritesEntry.COLUMN_MOVIE_ID));
-                String title = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_TITLE));
-                String releaseDate = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_DATE));
-                String voteAvg = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_VOTE));
-                String plot = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_PLOT));
-                String posterPath = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_POSTER));
-                movieData.add(new MovieData(title, releaseDate, posterPath, voteAvg, plot, id));
-            }
-            cursor.close();
-            mMovieList = movieData;
-            mAdapter.notifyDataSetChanged();
+            showMovies(true);
         }
     }
 
@@ -199,13 +180,11 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     }
 
     private void showMoviesData() {
-        mErrorText.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
-//        mErrorText.setVisibility(View.VISIBLE);
     }
 
     private Snackbar createRetrySnackbar() {
@@ -220,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     }
 
     private Cursor getFavoriteMovies() {
-//        return mDb.query(FavoritesEntry.TABLE_NAME, null, null, null, null, null, null);
         return  getContentResolver().query(FavoritesEntry.CONTENT_URI, null, null, null, null);
     }
 
