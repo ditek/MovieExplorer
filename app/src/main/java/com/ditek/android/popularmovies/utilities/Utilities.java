@@ -8,12 +8,15 @@ import android.util.Log;
 import com.ditek.android.popularmovies.MovieData;
 import com.ditek.android.popularmovies.Review;
 import com.ditek.android.popularmovies.Trailer;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,10 +25,6 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static android.R.attr.id;
-import static com.ditek.android.popularmovies.utilities.Utilities.SortMethod.POPULAR;
-import static com.ditek.android.popularmovies.utilities.Utilities.SortMethod.TOP_RATED;
 
 public final class Utilities {
 
@@ -51,28 +50,23 @@ public final class Utilities {
 
     public static List<Trailer> getTrailerListFromJson(String inputJsonStr)
             throws JSONException {
-        /* Weather information. Each day's forecast info is an element of the "list" array */
         final String DB_RESULTS = "results";
-        final String DB_KEY = "key";
-        final String DB_NAME = "name";
-        final String DB_TYPE = "type";
-
-        /* String array to hold each movie String */
         List<Trailer> trailerList = new ArrayList<>();
-
         JSONObject inputJson = new JSONObject(inputJsonStr);
-
         JSONArray resultsArray = inputJson.getJSONArray(DB_RESULTS);
+
+        // Use lambda expression instead of the for loop
+//        Gson gson = new Gson();
+//        Type listType = new TypeToken<List<Trailer>>() {}.getType();
+//        trailerList = gson.fromJson(resultsArray.toString(), listType);
+//        trailerList.removeIf(x -> !x.getType().equals("Trailer"));
 
         for (int i = 0; i < resultsArray.length(); i++) {
             JSONObject trailerObject = resultsArray.getJSONObject(i);
 
-            String trailerType = trailerObject.getString(DB_TYPE);
-            if(trailerType.equals("Trailer")) {
-                String trailerKey = trailerObject.getString(DB_KEY);
-//                String trailerPath = VIDEO_BASE_URL + trailerKey;
-                String name = trailerObject.getString(DB_NAME);
-                Trailer trailer = new Trailer(name, trailerKey);
+            Gson gson = new Gson();
+            Trailer trailer = gson.fromJson(trailerObject.toString(), Trailer.class);
+            if(trailer.getType().equals("Trailer")) {
                 trailerList.add(trailer);
             }
         }
@@ -81,27 +75,14 @@ public final class Utilities {
     
     public static List<Review> getReviewsListFromJson(String inputJsonStr)
             throws JSONException {
-        /* Weather information. Each day's forecast info is an element of the "list" array */
         final String DB_RESULTS = "results";
-        final String DB_AUTHOR = "author";
-        final String DB_CONTENT = "content";
-
-        /* String array to hold each movie String */
-        List<Review> reviewList = new ArrayList<>();
 
         JSONObject inputJson = new JSONObject(inputJsonStr);
-
         JSONArray resultsArray = inputJson.getJSONArray(DB_RESULTS);
 
-        for (int i = 0; i < resultsArray.length(); i++) {
-            JSONObject reviewObject = resultsArray.getJSONObject(i);
-
-            String author = reviewObject.getString(DB_AUTHOR);
-            String content = reviewObject.getString(DB_CONTENT);
-            Review review = new Review(author, content);
-            reviewList.add(review);
-        }
-        return reviewList;
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Review>>() {}.getType();
+        return gson.fromJson(resultsArray.toString(), listType);
     }
 
     /**
@@ -113,37 +94,19 @@ public final class Utilities {
      */
     public static List<MovieData> getMovieListFromJson(String inputJsonStr)
             throws JSONException {
-        /* Weather information. Each day's forecast info is an element of the "list" array */
         final String DB_RESULTS = "results";
-        final String DB_ID = "id";
-        final String DB_POSTER_PATH = "poster_path";
-        final String DB_TITLE = "title";
-        final String DB_RELEASE_DATE = "release_date";
-        final String DB_VOTE_AVG = "vote_average";
-        final String DB_PLOT = "overview";
-
-        /* String array to hold each movie String */
-        List<MovieData> parsedMovieData = new ArrayList<>();
-
         JSONObject inputJson = new JSONObject(inputJsonStr);
-
         JSONArray resultsArray = inputJson.getJSONArray(DB_RESULTS);
 
-        for (int i = 0; i < resultsArray.length(); i++) {
-            JSONObject movieObject = resultsArray.getJSONObject(i);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<MovieData>>() {}.getType();
+        List<MovieData> parsedMovieData = gson.fromJson(resultsArray.toString(), listType);
 
-            String posterFile = movieObject.getString(DB_POSTER_PATH);
-            String posterPath = buildImageUrl(posterFile);
-            String title = movieObject.getString(DB_TITLE);
-            String releaseDate = movieObject.getString(DB_RELEASE_DATE);
-            String voteAvg = movieObject.getString(DB_VOTE_AVG);
-            String plot = movieObject.getString(DB_PLOT);
-            int id = movieObject.getInt(DB_ID);
-
-            MovieData movieData = new MovieData(title, releaseDate, posterPath, voteAvg, plot, id);
-
-            parsedMovieData.add(movieData);
+        for (MovieData movieData : parsedMovieData) {
+            String fullPosterPath = buildImageUrl(movieData.getPosterPath());
+            movieData.setFullPosterPath(fullPosterPath);
         }
+
         return parsedMovieData;
     }
 

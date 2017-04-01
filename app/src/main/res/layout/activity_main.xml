@@ -6,18 +6,6 @@
     android:background="@android:color/background_dark"
     android:padding="0dp">
 
-    <TextView
-        android:id="@+id/tv_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="@string/error_message"
-        android:textAlignment="gravity"
-        android:textColor="@android:color/white"
-        android:textColorHighlight="@android:color/background_dark"
-        android:visibility="invisible" />
-
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/rv_movies"

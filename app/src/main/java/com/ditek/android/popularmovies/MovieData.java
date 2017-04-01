@@ -1,35 +1,36 @@
 package com.ditek.android.popularmovies;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.parceler.ParcelConstructor;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import static android.R.attr.data;
 
 /**
  * Created by diaa on 2/10/2017.
  */
 
 @org.parceler.Parcel
-public class MovieData{
-    String title;
+public class MovieData {
     int id;
-    String releaseDate;
-    String voteAvg;
-    String plot;
-    String posterPath;
+    String title;
+    String release_date;
+    String vote_average;
+    String overview;
+    String fullPosterPath;
+    String poster_path;
+
+    public String getPosterPath() {
+        return poster_path;
+    }
+
+    public void setFullPosterPath(String fullPosterPath) {
+        this.fullPosterPath = fullPosterPath;
+    }
 
     @ParcelConstructor
-    public MovieData(String title, String releaseDate, String posterPath, String voteAvg, String plot, int id) {
+    public MovieData(String title, String release_date, String fullPosterPath, String vote_average, String overview, int id) {
         this.title = title;
-        this.releaseDate = releaseDate;
-        this.posterPath = posterPath;
-        this.voteAvg = voteAvg;
-        this.plot = plot;
+        this.release_date = release_date;
+        this.fullPosterPath = fullPosterPath;
+        this.vote_average = vote_average;
+        this.overview = overview;
         this.id = id;
     }
 }

@@ -34,9 +34,6 @@ import butterknife.ButterKnife;
 
 import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
 
-import static android.R.attr.id;
-import static android.R.attr.name;
-
 public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private MovieData mMovieData;
@@ -44,20 +41,15 @@ public class DetailsActivity extends AppCompatActivity {
     private List<Review> mReviewList;
     private SQLiteDatabase mDb;
 
-    private ImageView mPosterImageView;
-    private TextView mTitleTV;
-    private TextView mReleaseDataTV;
-    private TextView mVoteAvgTV;
-    private TextView mPlotTV;
+    @BindView(R.id.tv_title) TextView mTitleTV;
+    @BindView(R.id.tv_release_date) TextView mReleaseDataTV;
+    @BindView(R.id.tv_vote_avg) TextView mVoteAvgTV;
+    @BindView(R.id.tv_plot) TextView mPlotTV;
+    @BindView(R.id.iv_details_poster) ImageView mPosterImageView;
 
-    @BindView(R.id.switch_favorite)
-    SwitchIconView mFavoriteSwitch;
-
-    @BindView(R.id.rv_trailers)
-    RecyclerView mTrailersView;
-
-    @BindView(R.id.rv_reviews)
-    RecyclerView mReviewsView;
+    @BindView(R.id.switch_favorite) SwitchIconView mFavoriteSwitch;
+    @BindView(R.id.rv_trailers) RecyclerView mTrailersView;
+    @BindView(R.id.rv_reviews) RecyclerView mReviewsView;
 
     private ReveiwAdapter mReviewAdapter;
     private TrailerAdapter mTrailerAdapter;
@@ -69,12 +61,6 @@ public class DetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         FavoritesDbHelper dbHelper = new FavoritesDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
-
-        mTitleTV = (TextView) findViewById(R.id.tv_title);
-        mReleaseDataTV = (TextView) findViewById(R.id.tv_release_date);
-        mVoteAvgTV = (TextView) findViewById(R.id.tv_vote_avg);
-        mPlotTV = (TextView) findViewById(R.id.tv_plot);
-        mPosterImageView = (ImageView) findViewById(R.id.iv_details_poster);
 
         LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mTrailersView.setLayoutManager(trailersLayoutManager);
@@ -91,12 +77,12 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieData = Parcels.unwrap(getIntent().getParcelableExtra("MovieData"));
         if (mMovieData != null) {
             Picasso.with(this)
-                    .load(mMovieData.posterPath)
+                    .load(mMovieData.fullPosterPath)
                     .into(mPosterImageView);
             mTitleTV.setText(mMovieData.title);
-            mReleaseDataTV.setText(mMovieData.releaseDate);
-            mVoteAvgTV.setText(mMovieData.voteAvg);
-            mPlotTV.setText(mMovieData.plot);
+            mReleaseDataTV.setText(mMovieData.release_date);
+            mVoteAvgTV.setText(mMovieData.vote_average);
+            mPlotTV.setText(mMovieData.overview);
 
             // Check if the movie is a favorite
             mFavoriteSwitch.setIconEnabled(isFavorite());
@@ -142,10 +128,10 @@ public class DetailsActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FavoritesEntry.COLUMN_TITLE, mMovieData.title);
         contentValues.put(FavoritesEntry.COLUMN_MOVIE_ID, mMovieData.id);
-        contentValues.put(FavoritesEntry.COLUMN_DATE, mMovieData.releaseDate);
-        contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.voteAvg);
-        contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.plot);
-        contentValues.put(FavoritesEntry.COLUMN_POSTER, mMovieData.posterPath);
+        contentValues.put(FavoritesEntry.COLUMN_DATE, mMovieData.release_date);
+        contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.vote_average);
+        contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.overview);
+        contentValues.put(FavoritesEntry.COLUMN_POSTER, mMovieData.fullPosterPath);
 //        mDb.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
 
         Uri uri = getContentResolver().insert(FavoritesEntry.CONTENT_URI, contentValues);

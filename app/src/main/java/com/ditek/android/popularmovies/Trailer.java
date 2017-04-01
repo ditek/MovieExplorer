@@ -7,9 +7,9 @@ package com.ditek.android.popularmovies;
 public class Trailer {
     String key;
     String name;
+    String type;
 
-    public Trailer(String name, String key){
-        this.name = name;
-        this.key = key;
+    public String getType() {
+        return type;
     }
 }

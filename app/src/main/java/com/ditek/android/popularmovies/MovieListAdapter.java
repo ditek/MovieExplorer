@@ -1,8 +1,6 @@
 package com.ditek.android.popularmovies;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +41,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         if (mIconsList != null && mIconsList.size() > position) {
             Picasso.with(holder.mIconView.getContext())
-                    .load(mIconsList.get(position).posterPath)
+                    .load(mIconsList.get(position).fullPosterPath)
                     .into(holder.mIconView);
         }
     }
