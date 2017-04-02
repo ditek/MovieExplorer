@@ -80,9 +80,9 @@ public class DetailsActivity extends AppCompatActivity {
                     .load(mMovieData.fullPosterPath)
                     .into(mPosterImageView);
             mTitleTV.setText(mMovieData.title);
-            mReleaseDataTV.setText(mMovieData.release_date);
-            mVoteAvgTV.setText(mMovieData.vote_average);
-            mPlotTV.setText(mMovieData.overview);
+            mReleaseDataTV.setText(mMovieData.releaseDate);
+            mVoteAvgTV.setText(mMovieData.voteAverage);
+            mPlotTV.setText(mMovieData.plot);
 
             // Check if the movie is a favorite
             mFavoriteSwitch.setIconEnabled(isFavorite());
@@ -128,9 +128,9 @@ public class DetailsActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FavoritesEntry.COLUMN_TITLE, mMovieData.title);
         contentValues.put(FavoritesEntry.COLUMN_MOVIE_ID, mMovieData.id);
-        contentValues.put(FavoritesEntry.COLUMN_DATE, mMovieData.release_date);
-        contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.vote_average);
-        contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.overview);
+        contentValues.put(FavoritesEntry.COLUMN_DATE, mMovieData.releaseDate);
+        contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.voteAverage);
+        contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.plot);
         contentValues.put(FavoritesEntry.COLUMN_POSTER, mMovieData.fullPosterPath);
 //        mDb.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
 

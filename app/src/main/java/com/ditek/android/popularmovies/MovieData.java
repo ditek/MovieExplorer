@@ -1,5 +1,7 @@
 package com.ditek.android.popularmovies;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.ParcelConstructor;
 
 /**
@@ -10,14 +12,18 @@ import org.parceler.ParcelConstructor;
 public class MovieData {
     int id;
     String title;
-    String release_date;
-    String vote_average;
-    String overview;
+    @SerializedName("release_date")
+    String releaseDate;
+    @SerializedName("vote_average")
+    String voteAverage;
+    @SerializedName("overview")
+    String plot;
+    @SerializedName("poster_path")
+    String posterPath;
     String fullPosterPath;
-    String poster_path;
 
     public String getPosterPath() {
-        return poster_path;
+        return posterPath;
     }
 
     public void setFullPosterPath(String fullPosterPath) {
@@ -25,12 +31,12 @@ public class MovieData {
     }
 
     @ParcelConstructor
-    public MovieData(String title, String release_date, String fullPosterPath, String vote_average, String overview, int id) {
+    public MovieData(String title, String releaseDate, String fullPosterPath, String voteAverage, String plot, int id) {
         this.title = title;
-        this.release_date = release_date;
+        this.releaseDate = releaseDate;
         this.fullPosterPath = fullPosterPath;
-        this.vote_average = vote_average;
-        this.overview = overview;
+        this.voteAverage = voteAverage;
+        this.plot = plot;
         this.id = id;
     }
 }
