@@ -6,16 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
 import com.ditek.android.popularmovies.utilities.Utilities;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.squareup.picasso.Picasso;
@@ -31,8 +34,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
 
 public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = DetailsActivity.class.getSimpleName();
@@ -59,6 +60,13 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_details);
+        setSupportActionBar(toolbar);
+
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle("Title");
+
         FavoritesDbHelper dbHelper = new FavoritesDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
 
@@ -116,9 +124,9 @@ public class DetailsActivity extends AppCompatActivity {
                 FavoritesEntry.CONTENT_URI, null, selection, selectionArgs, null
         );
 
-//        Cursor cursor = mDb.query(
-//                FavoritesEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null
-//        );
+        if(cursor == null){
+            return false;
+        }
         int numRows = cursor.getCount();
         cursor.close();
         return numRows > 0;
