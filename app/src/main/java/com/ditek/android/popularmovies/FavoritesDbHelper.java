@@ -12,7 +12,7 @@ import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
 
 public class FavoritesDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "favorites.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     FavoritesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,12 +27,12 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
                         FavoritesEntry.COLUMN_DATE + " TEXT NOT NULL, " +
                         FavoritesEntry.COLUMN_VOTE + " TEXT NOT NULL, " +
                         FavoritesEntry.COLUMN_PLOT + " TEXT NOT NULL, " +
-                        FavoritesEntry.COLUMN_POSTER + " TEXT NOT NULL " +
+                        FavoritesEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
+                        FavoritesEntry.COLUMN_BACKDROP + " TEXT NOT NULL " +
                         ");";
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
-    // 5. Override the onUpgrade method and execute the query to recreate/upgrade the table.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         final String SQL_DELETE_ENTRIES =

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         FavoritesDbHelper dbHelper = new FavoritesDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
 
-        int mNoOfColumns = Utilities.calculateNoOfColumns(getApplicationContext(), IMAGE_VIEW_WIDTH);
+        int mNoOfColumns = Utilities.calculateNoOfColumns(this, IMAGE_VIEW_WIDTH);
         GridLayoutManager layoutManager = new GridLayoutManager(this, mNoOfColumns);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         mSnackbar = createRetrySnackbar();
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && mMovieList != null) {
             if (savedInstanceState.containsKey(MOVIE_DATA_KEY)) {
                 mMovieList = Parcels.unwrap(savedInstanceState.getParcelable(MOVIE_DATA_KEY));
                 mAdapter.setData(mMovieList);
@@ -233,7 +233,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
                     String voteAvg = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_VOTE));
                     String plot = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_PLOT));
                     String posterPath = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_POSTER));
-                    movieData.add(new MovieData(title, releaseDate, posterPath, voteAvg, plot, id));
+                    String backdropPath = cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_BACKDROP));
+                    movieData.add(new MovieData(title, releaseDate, posterPath, backdropPath, voteAvg, plot, id));
                 }
                 cursor.close();
                 return movieData;

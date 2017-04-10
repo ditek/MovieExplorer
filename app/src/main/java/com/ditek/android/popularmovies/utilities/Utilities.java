@@ -31,9 +31,12 @@ public final class Utilities {
     private static final String TAG = Utilities.class.getSimpleName();
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
-    private static final String IMAGE_SIZE = "w185/";
+    private static final String IMAGE_SIZE_SMALL = "w185/";
+    private static final String IMAGE_SIZE_LARGE = "w500/";
 
     private static final String VIDEO_BASE_URL = "https://www.youtube.com/watch";
+    private static final String YOUTUBE_THUMBNAIL_BASE_URL = "https://img.youtube.com/vi";
+    private static final String YOUTUBE_THUMBNAIL_EXTENTION = "mqdefault.jpg";
 
     private static final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
 
@@ -66,6 +69,7 @@ public final class Utilities {
 
             Gson gson = new Gson();
             Trailer trailer = gson.fromJson(trailerObject.toString(), Trailer.class);
+            trailer.setThumbnailPath(buildYoutubeThumbnailUrl(trailer.getKey()).toString());
             if(trailer.getType().equals("Trailer")) {
                 trailerList.add(trailer);
             }
@@ -103,8 +107,10 @@ public final class Utilities {
         List<MovieData> parsedMovieData = gson.fromJson(resultsArray.toString(), listType);
 
         for (MovieData movieData : parsedMovieData) {
-            String fullPosterPath = buildImageUrl(movieData.getPosterPath());
+            String fullPosterPath = buildImageUrl(movieData.getPosterPath(), false);
+            String fullBackdropPath = buildImageUrl(movieData.getBackdropPath(), true);
             movieData.setFullPosterPath(fullPosterPath);
+            movieData.setFullBackdropPath(fullBackdropPath);
         }
 
         return parsedMovieData;
@@ -141,9 +147,9 @@ public final class Utilities {
         return url;
     }
 
-    public static String buildImageUrl(String imageFileName) {
-        String imageUrl = IMAGE_BASE_URL + IMAGE_SIZE + imageFileName;
-        return imageUrl;
+    public static String buildImageUrl(String imageFileName, boolean large) {
+        String image_size = large ? IMAGE_SIZE_LARGE : IMAGE_SIZE_SMALL;
+        return IMAGE_BASE_URL + image_size  + imageFileName;
     }
 
     public static URL buildVideoQueryUrl(int movieId) {
@@ -178,7 +184,7 @@ public final class Utilities {
         return url;
     }
 
-    public static URL buildYoutubeUrl(String videoKey) {
+    public static URL buildYoutubeVideoUrl(String videoKey) {
         Uri builtUri = Uri.parse(VIDEO_BASE_URL).buildUpon()
                 .appendQueryParameter("v", videoKey)
                 .build();
@@ -189,6 +195,21 @@ public final class Utilities {
             e.printStackTrace();
         }
         Log.i(TAG, "Built youtube URI " + url);
+        return url;
+    }
+
+    public static URL buildYoutubeThumbnailUrl(String videoKey) {
+        Uri builtUri = Uri.parse(YOUTUBE_THUMBNAIL_BASE_URL).buildUpon()
+                .appendPath(videoKey)
+                .appendPath(YOUTUBE_THUMBNAIL_EXTENTION)
+                .build();
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, "Built trailer thumbnail URI " + url);
         return url;
     }
 
@@ -210,12 +231,7 @@ public final class Utilities {
         return response.body().string();
     }
 
-    /**
-     * Calculates the number of columns that fit on the screen
-     *
-     * @param context
-     * @param imageViewWidth
-     */
+    /** Calculates the number of columns that fit on the screen */
     public static int calculateNoOfColumns(Context context, int imageViewWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;

@@ -42,15 +42,17 @@ public class DetailsActivity extends AppCompatActivity {
     private List<Review> mReviewList;
     private SQLiteDatabase mDb;
 
-    @BindView(R.id.tv_title) TextView mTitleTV;
     @BindView(R.id.tv_release_date) TextView mReleaseDataTV;
     @BindView(R.id.tv_vote_avg) TextView mVoteAvgTV;
     @BindView(R.id.tv_plot) TextView mPlotTV;
-    @BindView(R.id.iv_details_poster) ImageView mPosterImageView;
+    @BindView(R.id.iv_details_backdrop) ImageView mBackdropImageView;
 
     @BindView(R.id.switch_favorite) SwitchIconView mFavoriteSwitch;
     @BindView(R.id.rv_trailers) RecyclerView mTrailersView;
     @BindView(R.id.rv_reviews) RecyclerView mReviewsView;
+
+    @BindView(R.id.toolbar_details) Toolbar toolbar;
+    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
 
     private ReveiwAdapter mReviewAdapter;
     private TrailerAdapter mTrailerAdapter;
@@ -60,17 +62,12 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_details);
         setSupportActionBar(toolbar);
-
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("Title");
 
         FavoritesDbHelper dbHelper = new FavoritesDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
 
-        LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mTrailersView.setLayoutManager(trailersLayoutManager);
         mTrailersView.setHasFixedSize(true);
         mTrailerAdapter = new TrailerAdapter(this);
@@ -85,9 +82,9 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieData = Parcels.unwrap(getIntent().getParcelableExtra("MovieData"));
         if (mMovieData != null) {
             Picasso.with(this)
-                    .load(mMovieData.fullPosterPath)
-                    .into(mPosterImageView);
-            mTitleTV.setText(mMovieData.title);
+                    .load(mMovieData.fullBackdropPath)
+                    .into(mBackdropImageView);
+            collapsingToolbar.setTitle(mMovieData.title);
             mReleaseDataTV.setText(mMovieData.releaseDate);
             mVoteAvgTV.setText(mMovieData.voteAverage);
             mPlotTV.setText(mMovieData.plot);
@@ -112,7 +109,7 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             addToFavorites();
         }
-        mFavoriteSwitch.setIconEnabled(!mFavoriteSwitch.isIconEnabled());
+        mFavoriteSwitch.switchState();
     }
 
     boolean isFavorite() {
@@ -140,7 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
         contentValues.put(FavoritesEntry.COLUMN_VOTE, mMovieData.voteAverage);
         contentValues.put(FavoritesEntry.COLUMN_PLOT, mMovieData.plot);
         contentValues.put(FavoritesEntry.COLUMN_POSTER, mMovieData.fullPosterPath);
-//        mDb.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
+        contentValues.put(FavoritesEntry.COLUMN_BACKDROP, mMovieData.fullBackdropPath);
 
         Uri uri = getContentResolver().insert(FavoritesEntry.CONTENT_URI, contentValues);
         Log.i(TAG, "addToFavorites: " + uri.toString());

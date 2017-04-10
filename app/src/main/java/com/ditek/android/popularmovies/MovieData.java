@@ -20,21 +20,33 @@ public class MovieData {
     String plot;
     @SerializedName("poster_path")
     String posterPath;
+    @SerializedName("backdrop_path")
+    String backdropPath;
     String fullPosterPath;
+    String fullBackdropPath;
 
     public String getPosterPath() {
         return posterPath;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
     public void setFullPosterPath(String fullPosterPath) {
         this.fullPosterPath = fullPosterPath;
     }
 
+    public void setFullBackdropPath(String fullBackdropPath) {
+        this.fullBackdropPath = fullBackdropPath;
+    }
+
     @ParcelConstructor
-    public MovieData(String title, String releaseDate, String fullPosterPath, String voteAverage, String plot, int id) {
+    public MovieData(String title, String releaseDate, String fullPosterPath, String fullBackdropPath, String voteAverage, String plot, int id) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.fullPosterPath = fullPosterPath;
+        this.fullBackdropPath = fullBackdropPath;
         this.voteAverage = voteAverage;
         this.plot = plot;
         this.id = id;

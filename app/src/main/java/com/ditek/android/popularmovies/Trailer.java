@@ -8,6 +8,19 @@ public class Trailer {
     String key;
     String name;
     String type;
+    String thumbnailPath;
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
+    }
 
     public String getType() {
         return type;

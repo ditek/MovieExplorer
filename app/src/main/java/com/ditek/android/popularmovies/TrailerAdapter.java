@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         mOnClickListener = new ItemClickListener() {
             @Override
             public void onListItemClick(int clickedItemIndex) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Utilities.buildYoutubeUrl(mTrailerList.get(clickedItemIndex).key).toString()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Utilities.buildYoutubeVideoUrl(mTrailerList.get(clickedItemIndex).key).toString()));
                 if (intent.resolveActivity(context.getPackageManager()) != null)
                     context.startActivity(intent);
             }
@@ -57,7 +56,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
         if (mTrailerList != null && mTrailerList.size() > position) {
-            holder.mTextView.setText(mTrailerList.get(position).name);
+            Picasso.with(holder.mImageView.getContext())
+                    .load(mTrailerList.get(position).getThumbnailPath())
+                    .into(holder.mImageView);
         }
     }
 
@@ -74,12 +75,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     /**********************/
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mImageView;
-        private TextView mTextView;
 
         public TrailerViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.iv_trailer);
-            mTextView = (TextView) view.findViewById(R.id.tv_trailer);
             view.setOnClickListener(this);
         }
 
