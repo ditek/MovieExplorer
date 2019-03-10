@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MovieListAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private final static int IMAGE_VIEW_WIDTH = 100;
+    private final static int IMAGE_VIEW_WIDTH = 150;
     private static final String MOVIE_DATA_KEY = "movie_data";
     private static final String SORT_METHOD_KEY = "sort_mode";
 

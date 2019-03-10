@@ -107,7 +107,8 @@ public final class Utilities {
         List<MovieData> parsedMovieData = gson.fromJson(resultsArray.toString(), listType);
 
         for (MovieData movieData : parsedMovieData) {
-            String fullPosterPath = buildImageUrl(movieData.getPosterPath(), false);
+            // TODO: Request large poster only if the display density is high
+            String fullPosterPath = buildImageUrl(movieData.getPosterPath(), true);
             String fullBackdropPath = buildImageUrl(movieData.getBackdropPath(), true);
             movieData.setFullPosterPath(fullPosterPath);
             movieData.setFullBackdropPath(fullBackdropPath);
@@ -235,7 +236,7 @@ public final class Utilities {
     public static int calculateNoOfColumns(Context context, int imageViewWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (dpWidth / imageViewWidth);
+        int noOfColumns = (int) Math.ceil(dpWidth / imageViewWidth);
         return noOfColumns;
     }
 }
