@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +22,6 @@ import android.widget.TextView;
 
 import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
 import com.ditek.android.popularmovies.utilities.Utilities;
-import com.github.zagum.switchicon.SwitchIconView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -48,12 +48,12 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_plot) TextView mPlotTV;
     @BindView(R.id.iv_details_backdrop) ImageView mBackdropImageView;
 
-    @BindView(R.id.switch_favorite) SwitchIconView mFavoriteSwitch;
     @BindView(R.id.rv_trailers) RecyclerView mTrailersView;
     @BindView(R.id.rv_reviews) RecyclerView mReviewsView;
 
     @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.fab_details) FloatingActionButton mFab;
 
     private ReveiwAdapter mReviewAdapter;
     private TrailerAdapter mTrailerAdapter;
@@ -92,8 +92,8 @@ public class DetailsActivity extends AppCompatActivity {
             mPlotTV.setText(mMovieData.plot);
 
             // Check if the movie is a favorite
-            mFavoriteSwitch.setIconEnabled(isFavorite());
-            mFavoriteSwitch.setOnClickListener(new View.OnClickListener() {
+            setFabIcon(isFavorite());
+            mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     favoriteClickHandler(v);
@@ -106,12 +106,13 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void favoriteClickHandler(View view) {
-        if (mFavoriteSwitch.isIconEnabled()) {
+        boolean isFav = isFavorite();
+        if (isFav) {
             deleteFromFavorites();
         } else {
             addToFavorites();
         }
-        mFavoriteSwitch.switchState();
+        setFabIcon(!isFav);
     }
 
     boolean isFavorite() {
@@ -129,6 +130,10 @@ public class DetailsActivity extends AppCompatActivity {
         int numRows = cursor.getCount();
         cursor.close();
         return numRows > 0;
+    }
+
+    void setFabIcon(boolean fillIcon){
+        mFab.setImageResource(fillIcon ? R.drawable.ic_star_full : R.drawable.ic_star_border);
     }
 
     void addToFavorites() {
@@ -164,10 +169,6 @@ public class DetailsActivity extends AppCompatActivity {
         @Override
         protected Pair<List<Trailer>, List<Review>> doInBackground(Integer... params) {
             Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() + " " + params[0]);
-            if (params.length == 0) {
-                return null;
-            }
-
             int movieId = params[0];
             URL trailerRequestUrl = Utilities.buildVideoQueryUrl(movieId);
             URL reviewRequestUrl = Utilities.buildReviewQueryUrl(movieId);
@@ -201,14 +202,10 @@ public class DetailsActivity extends AppCompatActivity {
             mTrailerList = new ArrayList<>();
             mReviewList = new ArrayList<>();
             if (results.second != null) {
-                for (Trailer result : results.first) {
-                    mTrailerList.add(result);
-                }
+                mTrailerList.addAll(results.first);
             }
             if (results.second != null) {
-                for (Review result : results.second) {
-                    mReviewList.add(result);
-                }
+                mReviewList.addAll(results.second);
             }
             mTrailerAdapter.setData(mTrailerList);
             mReviewAdapter.setData(mReviewList);
