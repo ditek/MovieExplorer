@@ -19,9 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsActivity"></activity>
+        <activity android:name=".DetailsActivity" />
+
         <provider
-            android:name="com.ditek.android.popularmovies.FavoriteContentProvider"
+            android:name=".FavoriteContentProvider"
             android:authorities="com.ditek.android.popularmovies"
             android:exported="false" />
     </application>
