@@ -49,9 +49,8 @@ public class ReveiwAdapter extends RecyclerView.Adapter<ReveiwAdapter.ReviewView
             return 0;
     }
 
-    /**********************/
-    /** ViewHolder Class **/
-    /**********************/
+    /************************************ ViewHolder Class **************************************/
+
     class ReviewViewHolder extends RecyclerView.ViewHolder {
         private TextView mAuthorTextView;
         private TextView mContentTextView;

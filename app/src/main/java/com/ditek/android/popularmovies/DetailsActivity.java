@@ -155,18 +155,18 @@ public class DetailsActivity extends AppCompatActivity {
         mDb.close();
     }
 
-    /* Async Task ********/
+    /*************************************** Async Task *****************************************/
 
     public class GetTrailersTask extends AsyncTask<Integer, Void, Pair<List<Trailer>, List<Review>>> {
 
         @Override
         protected Pair<List<Trailer>, List<Review>> doInBackground(Integer... params) {
-            Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() + " " + String.valueOf(params[0]));
+            Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() + " " + params[0]);
             if (params.length == 0) {
                 return null;
             }
 
-            int movieId = params[0].intValue();
+            int movieId = params[0];
             URL trailerRequestUrl = Utilities.buildVideoQueryUrl(movieId);
             URL reviewRequestUrl = Utilities.buildReviewQueryUrl(movieId);
 

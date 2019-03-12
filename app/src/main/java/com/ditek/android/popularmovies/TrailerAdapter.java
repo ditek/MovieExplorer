@@ -70,9 +70,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             return 0;
     }
 
-    /**********************/
-    /** ViewHolder Class **/
-    /**********************/
+    /************************************ ViewHolder Class **************************************/
+
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mImageView;
 

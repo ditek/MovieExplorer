@@ -204,9 +204,9 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         return  getContentResolver().query(FavoritesEntry.CONTENT_URI, null, null, null, null);
     }
 
-    /**********************/
-    /** Async Task ********/
-    /**********************/
+
+    /*************************************** Async Task *****************************************/
+
     public class GetMoviesTask extends AsyncTask<Utilities.SortMethod, Void, List<MovieData>> {
 
         @Override
@@ -218,9 +218,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         @Override
         protected List<MovieData> doInBackground(Utilities.SortMethod... params) {
             Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName() + " " + params[0].toString());
-            if (params.length == 0) {
-                return null;
-            }
 
             Utilities.SortMethod movieSortMethod = params[0];
             if (movieSortMethod == Utilities.SortMethod.FAVORITE) {
@@ -244,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
                 try {
                     String response = Utilities.getResponseFromHttpUrl(requestUrl);
                     List<MovieData> movieData = Utilities.getMovieListFromJson(response);
-                    Log.i(TAG, "Received data entries: " + String.valueOf(movieData.size()));
+                    Log.i(TAG, "Received data entries: " + movieData.size());
                     return movieData;
 
                 } catch (SocketTimeoutException e) {
@@ -264,10 +261,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         protected void onPostExecute(List<MovieData> results) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (results != null) {
-                mMovieList = new ArrayList<>();
-                for (MovieData result : results) {
-                    mMovieList.add(result);
-                }
+                mMovieList = new ArrayList<>(results);
                 mAdapter.setData(mMovieList);
                 showMoviesData();
             } else {
