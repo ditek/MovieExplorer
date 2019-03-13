@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -65,7 +64,6 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
