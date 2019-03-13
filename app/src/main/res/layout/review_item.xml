@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
@@ -7,19 +8,17 @@
 
     <TextView
         android:id="@+id/tv_review_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextAuthorStyle"
         android:layout_gravity="start"
-        android:layout_marginLeft="10dp"
-        android:textStyle="bold" />
+        android:textAppearance="@style/TextAuthorStyle"
+        tools:text="JohnDoe" />
 
     <TextView
         android:id="@+id/tv_review_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextReviewStyle"
         android:layout_gravity="start"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp" />
+        android:textAppearance="@style/TextReviewStyle"
+        tools:text="This movie is awful!!!" />
 
     <View
         android:layout_width="match_parent"
