@@ -15,49 +15,84 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
             android:layout_marginRight="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_medium"
             android:orientation="vertical"
             tools:context=".DetailsActivity">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large">
+
+                <ImageView
+                    android:id="@+id/poster"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:transitionName="@string/poster_trans_name"
+                    tools:layout_width="150dp"
+                    tools:src="@drawable/poster_sample" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_movie_name"
+                        style="@style/TextMovieTitleStyle"
+                        android:textAppearance="@style/TextMovieTitleStyle"
+                        tools:text="Mortal Engines" />
+
+                    <TextView
+                        android:id="@+id/tv_release_date"
+                        style="@style/TextBodyStyle"
+                        android:textAppearance="@style/TextBodyStyle"
+                        tools:text="2016-04-07" />
+
+                    <TextView
+                        android:id="@+id/tv_vote_avg"
+                        style="@style/TextBodyStyle"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:textAppearance="@style/TextBodyStyle"
+                        android:visibility="gone"
+                        tools:text="5.0" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:stepSize="0.1"
+                        tools:rating="3.5" />
+
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
-                android:textAppearance="@style/TextTitleStyle"
                 style="@style/TextTitleStyle"
-                android:text="@string/release_data"/>
-
-            <TextView
-                android:id="@+id/tv_release_date"
-                android:textAppearance="@style/TextBodyStyle"
-                style="@style/TextBodyStyle"
-                tools:text="2016-04-07" />
-
-            <TextView
-                android:textAppearance="@style/TextTitleStyle"
-                style="@style/TextTitleStyle"
-                android:text="@string/vote_average" />
-
-            <TextView
-                android:id="@+id/tv_vote_avg"
-                android:textAppearance="@style/TextBodyStyle"
-                style="@style/TextBodyStyle"
-                tools:text="5.0" />
-
-            <TextView
-                android:textAppearance="@style/TextTitleStyle"
-                style="@style/TextTitleStyle"
-                android:text="@string/plot" />
+                android:text="@string/plot"
+                android:textAppearance="@style/TextTitleStyle" />
 
             <TextView
                 android:id="@+id/tv_plot"
-                android:textAppearance="@style/TextBodyStyle"
                 style="@style/TextBodyStyle"
+                android:textAppearance="@style/TextBodyStyle"
                 tools:text="Test test" />
 
             <TextView
-                android:textAppearance="@style/TextTitleStyle"
                 style="@style/TextTitleStyle"
                 android:layout_marginBottom="@dimen/margin_medium"
-                android:text="@string/trailers"/>
+                android:text="@string/trailers"
+                android:textAppearance="@style/TextTitleStyle" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_trailers"
@@ -67,9 +102,9 @@
                 tools:context=".DetailsActivity" />
 
             <TextView
-                android:textAppearance="@style/TextTitleStyle"
                 style="@style/TextTitleStyle"
-                android:text="@string/reviews"/>
+                android:text="@string/reviews"
+                android:textAppearance="@style/TextTitleStyle" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_reviews"

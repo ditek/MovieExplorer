@@ -4,10 +4,11 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_icon"
+        android:id="@+id/iv_poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
+        android:transitionName="@string/poster_trans_name"
         android:layout_margin="1dp"
         android:scaleType="fitCenter" />
 </FrameLayout>

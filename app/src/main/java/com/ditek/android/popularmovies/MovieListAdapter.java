@@ -14,7 +14,7 @@ import java.util.List;
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private List<MovieData> mIconsList;
+    private List<MovieData> mMovieDataList;
     final private ItemClickListener mOnClickListener;
 
     MovieListAdapter(ItemClickListener listener) {
@@ -26,7 +26,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     public void setData(List<MovieData> data) {
-        mIconsList = new ArrayList<>(data);
+        mMovieDataList = new ArrayList<>(data);
         notifyDataSetChanged();
     }
 
@@ -39,30 +39,29 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        if (mIconsList != null && mIconsList.size() > position) {
-            Picasso.with(holder.mIconView.getContext())
-                    .load(mIconsList.get(position).fullPosterPath)
-                    .into(holder.mIconView);
+        if (mMovieDataList != null && mMovieDataList.size() > position) {
+            Picasso.with(holder.mPoster.getContext())
+                    .load(mMovieDataList.get(position).fullPosterPath)
+                    .into(holder.mPoster);
         }
     }
 
     @Override
     public int getItemCount() {
-        if (mIconsList != null)
-            return mIconsList.size();
+        if (mMovieDataList != null)
+            return mMovieDataList.size();
         else
             return 0;
     }
 
-    /**********************/
-    /** ViewHolder Class **/
-    /**********************/
+    /************************************ ViewHolder Class **************************************/
+
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView mIconView;
+        private ImageView mPoster;
 
         public MovieViewHolder(View view) {
             super(view);
-            mIconView = (ImageView) view.findViewById(R.id.iv_icon);
+            mPoster = (ImageView) view.findViewById(R.id.iv_poster);
             view.setOnClickListener(this);
         }
 

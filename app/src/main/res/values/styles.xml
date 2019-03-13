@@ -6,13 +6,15 @@
         <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
         <item name="colorAccent">@color/secondaryColorGray</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/primaryTextColorGray</item>
         <item name="android:textColorSecondary">@color/secondaryTextColorGray</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="TextTitleStyle" parent="TextAppearance.AppCompat.Title">
-        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_large</item>
         <item name="android:layout_marginBottom">@dimen/margin_medium</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -24,16 +26,23 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="TextAuthorStyle" parent="TextAppearance.AppCompat.Subhead">
+    <style name="TextAuthorStyle" parent="TextAppearance.AppCompat.Medium">
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="TextReviewStyle" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
+        <item name="android:layout_marginStart">@dimen/margin_large</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextMovieTitleStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textColor">@color/primaryTextColorGray</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -115,7 +116,12 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("MovieData", Parcels.wrap(mMovieList.get(clickedItemIndex)));
-        startActivity(intent);
+
+        // Create transition between the poster in this activity and the one in Details activity
+        View posterImage = mRecyclerView.getLayoutManager().findViewByPosition(clickedItemIndex);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this, posterImage, getString(R.string.poster_trans_name));
+        startActivity(intent, options.toBundle());
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.ditek.android.popularmovies.FavoritesContract.FavoritesEntry;
@@ -44,9 +45,12 @@ public class DetailsActivity extends AppCompatActivity {
     private SQLiteDatabase mDb;
 
     @BindView(R.id.tv_release_date) TextView mReleaseDataTV;
+    @BindView(R.id.tv_movie_name) TextView mMovieTitle;
     @BindView(R.id.tv_vote_avg) TextView mVoteAvgTV;
+    @BindView(R.id.ratingBar) RatingBar mRatingBar;
     @BindView(R.id.tv_plot) TextView mPlotTV;
     @BindView(R.id.iv_details_backdrop) ImageView mBackdropImageView;
+    @BindView(R.id.poster) ImageView mPosterImageView;
 
     @BindView(R.id.rv_trailers) RecyclerView mTrailersView;
     @BindView(R.id.rv_reviews) RecyclerView mReviewsView;
@@ -86,9 +90,15 @@ public class DetailsActivity extends AppCompatActivity {
             Picasso.with(this)
                     .load(mMovieData.fullBackdropPath)
                     .into(mBackdropImageView);
+            Picasso.with(this)
+                    .load(mMovieData.fullPosterPath)
+                    .into(mPosterImageView);
             collapsingToolbar.setTitle(mMovieData.title);
-            mReleaseDataTV.setText(mMovieData.releaseDate);
+            mMovieTitle.setText(mMovieData.title);
+            // Only use the year part of the date
+            mReleaseDataTV.setText(mMovieData.releaseDate.substring(0, 4));
             mVoteAvgTV.setText(mMovieData.voteAverage);
+            mRatingBar.setRating(Float.valueOf(mMovieData.voteAverage)/2);
             mPlotTV.setText(mMovieData.plot);
 
             // Check if the movie is a favorite
